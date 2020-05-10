@@ -1,0 +1,32 @@
+{
+  "name": "like-util",
+  "version": "0.1.0",
+  "description": "Repetitive codes that I always use",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuKks/like-util.git"
+  },
+  "author": "Lucas Barrena <lucasbarrena@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LuKks/like-util/issues"
+  },
+  "homepage": "https://github.com/LuKks/like-util#readme",
+  "keywords": [
+    "like",
+    "util",
+    "repetitive",
+    "codes",
+    "useful"
+  ],
+  "dependencies": {
+    "nanoid": "^3.1.6",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.8",
+    "yup": "^0.28.5"
+  }
+}
