@@ -7,11 +7,11 @@
 'use strict';
 
 function millis () {
-  return Date().now();
+  return Date.now();
 }
 
 function seconds () {
-  return Math.floor(Date().now() / 1000);
+  return Math.floor(Date.now() / 1000);
 }
 
 module.exports = {
