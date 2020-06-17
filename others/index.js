@@ -24,7 +24,7 @@ function isObjectEqual (value, other) {
     var itemType = Object.prototype.toString.call(item1);
 
     if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
-      if (!arraysEqual(item1, item2)) return false;
+      if (!isObjectEqual(item1, item2)) return false;
     } else {
       if (itemType !== Object.prototype.toString.call(item2)) return false;
       if (itemType === '[object Function]') {
