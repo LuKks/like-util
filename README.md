@@ -51,7 +51,7 @@ await randomFloat() // => 0.29868882046557754
 await randomInt(0, 3) // => 0, 1 or 2
 ```
 
-Notice that `randomInt(min, max)`: `min` is inclusive and `max` is exclusive
+Notice that `randomInt(min, max)`: `min` is inclusive and `max` is exclusive\
 `randomFloat()` is like `Math.random()`: 0 (inclusive) and 1 (exclusive)
 
 #### network
