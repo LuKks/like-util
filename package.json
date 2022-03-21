@@ -1,6 +1,6 @@
 {
   "name": "like-util",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Repetitive codes that I always use",
   "main": "index.js",
   "scripts": {
