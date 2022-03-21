@@ -46,7 +46,7 @@ createHmac('sha1', 'secret key', 'secret text') // => '85c15fbb5b1c3afbd645f9997
 
 // All are cryptographically secure:
 await randomBytes(4) // => <Buffer 52 62 03 01>
-await randomHex(4) // => 'f3a66fa0'
+await randomHex(4) // => 'f3a66fa0' (bytes to hex are double in size)
 await randomFloat() // => 0.29868882046557754
 await randomInt(0, 3) // => 0, 1 or 2
 ```
