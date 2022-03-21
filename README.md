@@ -32,17 +32,16 @@ npm i like-util
 ```
 
 ## Examples
-#### passwordHash
-```javascript
-const hashed = passwordHash('hwy123') // 108 len EcM4...3Fr4+I=
-const result = passwordHash('hwy123', hashed) // EcM4...3Fr4+I= (same output)
-const match = hashed === result // true
-```
-
 #### crypto
 ```javascript
+// hashing
 createHash('sha1', 'secret text') // => '43de199bc1b7196be767cce745baece4dc95fbf2'
 createHmac('sha1', 'secret key', 'secret text') // => '85c15fbb5b1c3afbd645f99977a260c4984086f8'
+
+// password hash
+const hashed = await passwordHash('hwy123') // 108 len EcM4...3Fr4+I=
+const result = await passwordHash('hwy123', hashed) // EcM4...3Fr4+I= (same output)
+const match = hashed === result // true
 
 // All are cryptographically secure:
 await randomBytes(4) // => <Buffer 52 62 03 01>
