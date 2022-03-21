@@ -5,13 +5,25 @@ Repetitive codes that I always use.
 ![](https://img.shields.io/npm/v/like-util.svg) ![](https://img.shields.io/npm/dt/like-util.svg) ![](https://img.shields.io/github/license/LuKks/like-util.svg)
 
 ```javascript
-const { createHash, createHmac, scrypt, randomBytes, passwordHash } = require('like-util/crypto');
-const { randomHex, randomFloat, randomInt, randomId, randomString, randomAlpha } = require('like-util/crypto');
-const { db } = require('like-util/database');
-const { millis, seconds } = require('like-util/date');
-const { yup, ErrorHandler } = require('like-util/error');
-const { request, ip2int, int2ip } = require('like-util/network');
-const { sleep, isObjectEqual } = require('like-util/others');
+// crypto
+const { createHash, createHmac, passwordHash } = require('like-util')
+const { randomBytes, randomHex, randomFloat, randomInt } = require('like-util')
+
+// network
+const { ip2int, int2ip } = require('like-util')
+
+// errors
+const { ErrorHandler } = require('like-util')
+
+// date
+const { dateToSeconds, dateToLocale } = require('like-util')
+
+// others
+const { sleep, isObjectEqual } = require('like-util')
+
+// shared object
+const { shared } = require('like-util')
+const shared = require('like-util/shared')
 ```
 
 ## Install
@@ -19,121 +31,109 @@ const { sleep, isObjectEqual } = require('like-util/others');
 npm i like-util
 ```
 
-## Features
+## Examples
+#### passwordHash
+```javascript
+const hashed = passwordHash('hwy123') // 108 len EcM4...3Fr4+I=
+const result = passwordHash('hwy123', hashed) // EcM4...3Fr4+I= (same output)
+const match = hashed === result // true
+```
+
 #### crypto
 ```javascript
-createHash(algo: String, text: String): String
-createHmac(algo: String, text: String, key: String): String
-scrypt(password, salt, keylen): Buffer
-randomBytes(size: Number): Buffer
-passwordHash(secret: String, verify?: String): Buffer
-randomHex(len: Number): String
-randomFloat(): Number
-randomInt(min: Number, max: Number): Number
-randomId(): String
-randomString(alphabet: String, len: Number): String
-randomAlpha(len: Number): String
+createHash('sha1', 'secret text') // => '43de199bc1b7196be767cce745baece4dc95fbf2'
+createHmac('sha1', 'secret key', 'secret text') // => '85c15fbb5b1c3afbd645f99977a260c4984086f8'
+
+// All are cryptographically secure:
+await randomBytes(4) // => <Buffer 52 62 03 01>
+await randomHex(4) // => 'f3a66fa0'
+await randomFloat() // => 0.29868882046557754
+await randomInt(0, 3) // => 0, 1 or 2
 ```
 
-#### database
-```javascript
-db: Object
-```
-
-#### date
-```javascript
-millis(): Number
-seconds(): Number
-```
-
-#### error
-```javascript
-yup: Object (library 'npmjs.com/yup')
-ErrorHandler(statusCode: Number, message: String): undefined
-ErrorHandler.middleware(err, req, res, next): undefined
-```
+Notice that `randomInt(min, max)`: `min` is inclusive and `max` is exclusive
+`randomFloat()` is like `Math.random()`: 0 (inclusive) and 1 (exclusive)
 
 #### network
 ```javascript
-request: Object (library 'npmjs.com/request-promise-native')
-ip2int(ip: String): Number
-int2ip(int: Number): String
+ip2int('142.250.188.14') // => 2398796814
+int2ip(2398796814) // => '142.250.188.14'
+
+ip2int('113.5.67.242') // => 1896170482
+int2ip(-2398796814) // => '113.5.67.242'
 ```
 
-#### others
+#### Date
 ```javascript
-sleep(ms: Number): Number
-isObjectEqual(a: Object|Array, b: Object|Array): Boolean
+dateToSeconds() // => 1647838051
+
+dateToLocale() // => '21/03/2022, 01:47:21'
+dateToLocale({ year: false, second: false }) // => '21/03, 01:47'
+dateToLocale({ time: 1647838051337, millis: true }) // => '21/03/2022, 01:47:31.337'
 ```
 
-## Examples
-#### How to use the very useful `db` object?
+#### Others
+```javascript
+await sleep(1000)
+
+isObjectEqual({ a: 1, b: 2 }, { a: 1, b: 2 }) // => true
+isObjectEqual({ a: 1, b: 2 }, { b: 2, a: 1 }) // => true (still true)
+isObjectEqual({ a: { b: { c: 1 } } }, { a: { b: { c: 1 } } }) // => true
+isObjectEqual({ a: 1, b: 2 }, { a: 1, b: 2, c: 3 }) // => false
+
+const obj = { a: 1, b: function () {} }
+isObjectEqual(obj, JSON.parse(JSON.stringify(obj))) // => false
+```
+
+#### Shared object
 It's just a quick access for an object.\
-At the start-up of your app, you can initialize it:
+At the start-up of your app, you can initialize it and then use it:
 ```javascript
-const like = require('like-util');
-const mongodb = require('mongodb'); // or use node-mysql2, like-mysql, etc
+// app.js
+const shared = require('like-util/shared')
+shared.web3 = new Web3()
 
-mongodb.MongoClient.connect('mongodb://...', function (err, client) {
-  if (err) throw err;
-  like.database.db = client.db(database); // initialization
-  // it's ready to use
-});
-
-```
-And after that, you can use it in any other places:
-```javascript
-const { db } = require('like-util/database');
-db.users.insertOne({ username: 'lukks' });
+// route.js
+const { web3 } = require('like-util/shared')
+// ...
 ```
 
-#### What about `ErrorHandler`?
+#### `ErrorHandler`, optionally with `yup`
 It can help you handling errors in your HTTP server:
 ```javascript
-const express = require('express');
-const { ErrorHandler } = require('like-util/error');
-require('express-async-errors'); // I strongly recommend this library
-const app = express();
+const express = require('express')
+require('express-async-errors')
+const { ErrorHandler } = require('like-util')
+const yup = require('yup')
 
-app.post((req, res) => {
-  let isUsernameUsed = true;
-  if (isUsernameUsed) {
-    // easy way to throw a simple validation error
-    throw ErrorHandler(400, 'The username is already used, pick another one');
-  }
-});
-
-app.use(ErrorHandler.middleware); // handle errors
-
-app.listen(3000, () => console.log('listening'));
-```
-
-#### Combining `ErrorHandler` and `yup`
-```javascript
-const express = require('express');
-const { yup, ErrorHandler } = require('like-util/error');
-require('express-async-errors'); // I strongly recommend this library
-const app = express();
+const app = express()
 
 // I really like yup, it's very easy to create schemas for requests
 const schema = yup.object().shape({
   email: yup.string().default('').min(5).max(128),
   password: yup.string().default('').min(4),
   repassword: yup.string().default('').oneOf([yup.ref('password')])
-});
+})
 
-app.post(async (req, res) => {
-  // we don't need to try-catch, we have express-async-errors and ErrorHandler
-  let body = await schema.validate(req.body);
+app.post('/signup', async function (req, res) {
+  // We don't need to try-catch,
+  // in case there is an error at validation, it will send status 400
+  const body = await schema.validate(req.body)
 
   if (body.password !== body.repassword) {
-    throw ErrorHandler(400, 'The passwords are not equals');
+    throw ErrorHandler(400, 'The passwords are not equals')
   }
-});
 
-app.use(ErrorHandler.middleware); // handle errors
+  // Let's say this operation throws an error which is a critical error,
+  // it will send status 500 with a generic message to avoid leaking internal errors
+  await db.insert('users', { ... })
 
-app.listen(3000, () => console.log('listening'));
+  res.send('ok')
+})
+
+app.use(ErrorHandler.middleware) // handle errors
+
+app.listen(3000, () => console.log('listening'))
 ```
 
 ## Tests

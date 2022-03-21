@@ -4,7 +4,7 @@
   "description": "Repetitive codes that I always use",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/LuKks/like-util/issues"
   },
-  "homepage": "https://github.com/LuKks/like-util#readme",
+  "homepage": "https://github.com/LuKks/like-util",
   "keywords": [
     "like",
     "util",
@@ -24,9 +24,9 @@
     "useful"
   ],
   "dependencies": {
-    "nanoid": "^3.1.6",
-    "request": "^2.88.2",
-    "request-promise-native": "^1.0.8",
-    "yup": "^0.28.5"
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "standard": "^16.0.4"
   }
 }
