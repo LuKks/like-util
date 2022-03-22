@@ -6,8 +6,6 @@ const yup = require('yup')
 const scrypt = util.promisify(crypto.scrypt)
 const randomBytes = util.promisify(crypto.randomBytes)
 
-console.log(isObjectEqual({ a: { b: { c: 1 } } }, { a: { b: { c: 1 } } }))
-
 // crypto
 function createHash (algo, text) {
   return crypto.createHash(algo).update(text).digest('hex')
