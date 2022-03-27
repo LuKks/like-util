@@ -1,6 +1,6 @@
 # like-util
 
-Repetitive codes that I always use.
+Reusable utility code.
 
 ![](https://img.shields.io/npm/v/like-util.svg) ![](https://img.shields.io/npm/dt/like-util.svg) ![](https://img.shields.io/github/license/LuKks/like-util.svg)
 
