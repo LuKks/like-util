@@ -1,6 +1,6 @@
 {
   "name": "like-util",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Reusable utility code",
   "main": "index.js",
   "scripts": {
