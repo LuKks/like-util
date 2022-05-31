@@ -43,6 +43,10 @@ function randomInt (min, max) {
   })
 }
 
+function randomNumber (min, max) {
+  return randomInt(min, max + 1)
+}
+
 function _int2float (integer) {
   return integer / Math.pow(2, 64)
 }
@@ -162,6 +166,7 @@ module.exports = {
   randomHex,
   randomFloat,
   randomInt,
+  randomNumber,
   passwordHash,
 
   ErrorHandler,
